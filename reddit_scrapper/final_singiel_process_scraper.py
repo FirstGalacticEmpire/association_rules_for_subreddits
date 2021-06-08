@@ -81,7 +81,7 @@ def end_file():
 
 
 if __name__ == "__main__":
-    file_name = "test_e.json"
+    file_name = "a_test.json"
     # TODO http error handling
     start_time = time.time()
 
@@ -100,6 +100,7 @@ if __name__ == "__main__":
 
     done_subreddits = []
     for subreddit in most_popular_subreddits:
+        print(subreddit)
         try:
             my_func(list_of_visited_redditors, list_of_unique_subreddits, subreddit, how_deep=5, file_name=file_name)
             done_subreddits.append(subreddit)
