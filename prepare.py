@@ -20,10 +20,9 @@ lower_limit = params['lower_limit']
 
 input_file = Path(sys.argv[1]) #'reddit_scrapper/data/scrapped_data.json'
 input_index = Path(sys.argv[2]) #'reddit_scrapper/data/list_of_unique_subreddits.json'
-int_output = Path('data') / 'matrix.csv'
-bool_output = Path('data') / 'matrix_bool.csv'
-data = json.load(open('reddit_scrapper/data/scrapped_data.json','r+'))
-subreddit_names_list = json.load(open('reddit_scrapper/data/list_of_unique_subreddits.json','r+'))
+#Path('prepared').mkdir(parents=True, exist_ok=True)
+data = json.load(open(input_file,'r+'))
+subreddit_names_list = json.load(open(input_index,'r+'))
 subreddit_index = dict(zip(subreddit_names_list,range(len(subreddit_names_list))))
 index_subreddit =  dict(zip(range(len(subreddit_names_list)),subreddit_names_list))
 
@@ -60,19 +59,10 @@ def extract_most_popular_subreddits(df,lower_limit,upper_limit):
 
 matrix = create_matrix(data,len(subreddit_names_list),subreddit_index)
 df = filter_matrix(matrix,5,index_subreddit)
-df_bool = df.astype(bool).astype(int)
 df = extract_most_popular_subreddits(df,lower_limit,upper_limit)
-df.to_csv(int_output, header=None)
-
-mask = np.where(matrix>2,True,False)
-rows = ~np.all(mask==False,axis=1)
-columns = ~np.all(mask==False,axis=0)
-del mask
-data = matrix[np.ix_(rows,columns)]
-df = pd.DataFrame(data,columns=np.squeeze(np.argwhere(columns)))
-del rows
-del columns
-del data
-del matrix
+df.to_csv('prepared/matrix.csv', header=None)
+print("Almost done...")
+#df = filter_matrix(matrix,2,index_subreddit)
+df = df.astype(bool).astype(int)
 df.rename(columns=index_subreddit,inplace=True)
-df.to_csv(bool_output, header=None)
+df.to_csv('prepared/matrix_bool.csv', header=None)
