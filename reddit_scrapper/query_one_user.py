@@ -1,4 +1,6 @@
 import praw
+import json
+
 reddit = praw.Reddit(
     client_id="83adArc_D-RzLA",
     client_secret="sYyJyc67NIeGvOu5Aenq-nVr3hZbrw",
@@ -8,7 +10,7 @@ reddit = praw.Reddit(
 )
 
 
-def query_comments_of_user(username,  how_deep=50):
+def query_comments_of_user(username, how_deep=50):
     redditor = reddit.redditor(username)
     dictionary_of_subreddits = {}
     comments = redditor.comments.new(limit=how_deep)
@@ -17,6 +19,10 @@ def query_comments_of_user(username,  how_deep=50):
             dictionary_of_subreddits[comment.subreddit.display_name] += 1
         except KeyError:
             dictionary_of_subreddits[comment.subreddit.display_name] = 1
+
+    with (open("data/scrapped_one_user.json", "w+")) as outfile:
+        json.dump(dictionary_of_subreddits, outfile, indent=4)
+
     return dictionary_of_subreddits
 
 
