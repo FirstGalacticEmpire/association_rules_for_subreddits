@@ -49,11 +49,9 @@ stages:
     outs:
       - target/user.json
   recommend:
-    cmd: python recommend.py target/arules-10000-00035.json target/user.json target/tsna.csv target/tsna.pkl target/pca.csv
+    cmd: python recommend.py target/arules-10000-00035.json target/user.json target/pca.csv
     deps:
       - recommend.py
       - target/arules-10000-00035.json
       - target/user.json
-      - target/tsna.csv
-      - target/tsna.pkl
       - target/pca.csv
