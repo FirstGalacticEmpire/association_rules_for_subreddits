@@ -1,8 +1,9 @@
 prepare:
   upper_limit: 2000
   lower_limit: 3
+  upper_limit_arules: 10000
+  lower_limit_arules: 20
 generate_association_rules_final:
-  upper_limit: 5000
   min_support: 0.00035
 cluster_TSNA:
   n_components: 3
