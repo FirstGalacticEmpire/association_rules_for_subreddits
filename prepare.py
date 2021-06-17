@@ -12,6 +12,7 @@ import matplotlib.cm as cm
 import plotly.express as px
 import sys
 import yaml
+
 from pathlib import Path
 
 params = yaml.safe_load(open('params.yaml'))['prepare']
@@ -34,8 +35,7 @@ def create_matrix(data,matrix_width,subreddit_index):
         for key,value in redditor.items():
             matrix[idx,subreddit_index[key]] = value
     return matrix
-
-def filter_matrix(matrix,threshold,index_subreddit):
+def filter_matrix(matrix,threshold,indexsubreddit):
     mask = np.where(matrix>threshold,True,False)
     rows = ~np.all(mask==False,axis=1)
     columns = ~np.all(mask==False,axis=0)
@@ -46,8 +46,7 @@ def filter_matrix(matrix,threshold,index_subreddit):
     del data,columns
     df.rename(columns=index_subreddit,inplace=True)
     return df
-
-def extract_most_popular_subreddits(df,lower_limit,upper_limit):
+def extract_most_popular_subreddits(df,lower_limit,upper_limit,clear_zero_rows=True):
     most_popular_reddits = df.sum(axis=0).sort_values(ascending=False)[lower_limit:upper_limit].index
     column_base_order = dict(zip(df.columns,range(len(df.columns))))
     column_indexes = [column_base_order[i] for i in most_popular_reddits]
@@ -55,14 +54,20 @@ def extract_most_popular_subreddits(df,lower_limit,upper_limit):
     del df,column_base_order,column_indexes
     zero_rows = np.where(X_np.sum(axis=1) == 0)[0]
     X_np= np.delete(X_np, zero_rows, axis=0)
-    return pd.DataFrame(X_np,columns=most_popular_reddits).drop_duplicates()
+    if clear_zero_rows:
+        return pd.DataFrame(X_np,columns=most_popular_reddits).drop_duplicates()
+    else:
+        return pd.DataFrame(df,columns=most_popular_reddits).drop_duplicates()
+
 
 matrix = create_matrix(data,len(subreddit_names_list),subreddit_index)
+print(matrix.shape)
 df = filter_matrix(matrix,5,index_subreddit)
+del matrix
 df = extract_most_popular_subreddits(df,lower_limit,upper_limit)
-df.to_csv('prepared/matrix.csv', header=None)
+df.to_csv('prepared/matrix.csv', index=False)
 print("Almost done...")
 #df = filter_matrix(matrix,2,index_subreddit)
 df = df.astype(bool).astype(int)
 df.rename(columns=index_subreddit,inplace=True)
-df.to_csv('prepared/matrix_bool.csv', header=None)
+df.to_csv('prepared/matrix_bool.csv', index=False)

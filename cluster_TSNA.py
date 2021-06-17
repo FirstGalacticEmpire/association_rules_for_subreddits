@@ -21,10 +21,12 @@ random_state = params['random_state']
 input_file = sys.argv[1]
 #Path(output_dir).mkdir(exist_ok=True)
 df = pd.read_csv(input_file, sep=',')
-
+df = df.iloc[:-3,:]
 tsne =  TSNE(n_components=n_components,n_jobs=n_jobs,random_state=random_state)
 #X_tsne = tsne.fit_transform(df)
 X_tsne = pd.read_csv('X_tsneL=3U=2000.csv')
+X_tsne.drop(columns=['Unnamed: 0'],inplace=True)
+
 clustering = DBSCAN(eps=2, min_samples=8,n_jobs=-1).fit(X_tsne)
 X_tsne = pd.DataFrame(X_tsne,columns=['component1','component2','component3'])
 X_tsne['clustering'] = clustering.labels_
@@ -32,6 +34,7 @@ X_tsne['clustering'] = X_tsne['clustering'].astype(str)
 X_tsne = X_tsne[X_tsne['clustering'] !='-1']
 
 clustered_useres_dicts = {}
+print(df.shape, X_tsne.shape)
 df.loc[:,'clustering'] = clustering.labels_
 clustered_users = df.groupby(by=df['clustering']).sum()
 clustered_users_matrix = clustered_users.to_numpy().astype(int)
@@ -49,4 +52,4 @@ outfile = open('target/tsna.pkl','wb')
 pickle.dump(X_tsne,outfile)
 outfile.close()
 
-clustered_users.to_csv('target/tsna.csv', header=None)
+clustered_users.to_csv('target/clustered_users.csv')

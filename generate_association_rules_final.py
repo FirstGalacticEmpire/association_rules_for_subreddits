@@ -19,7 +19,6 @@ input_path = sys.argv[1]
 #Path(output_dir).mkdir(exist_ok=True)
 
 df_bool = pd.read_csv(input_path, sep=',')
-df_bool = df_bool.iloc[: , 1:]
 frequent_itemsets = apriori(df_bool, min_support=min_support,
                             use_colnames=True, low_memory=True,
                             verbose=2, max_len=7)

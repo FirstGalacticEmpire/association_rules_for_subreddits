@@ -40,7 +40,7 @@ stages:
       - cluster_TSNA.n_jobs
       - cluster_TSNA.random_state
     outs:
-      - target/tsna.csv
+      - target/clustered_users.csv
       - target/tsna.pkl
   scrape_user:
     cmd: python scrape_user.py
@@ -49,9 +49,12 @@ stages:
     outs:
       - target/user.json
   recommend:
-    cmd: python recommend.py target/arules-10000-00035.json target/user.json target/pca.csv
+    cmd: python recommend.py target/arules-10000-00035.json target/user.json target/pca.csv prepared/matrix.csv target/pca.pkl target/clustering.pkl
     deps:
       - recommend.py
       - target/arules-10000-00035.json
       - target/user.json
       - target/pca.csv
+      - prepared/matrix.csv
+      - target/pca.pkl
+      - target/clustering.pkl
