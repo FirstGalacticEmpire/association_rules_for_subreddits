@@ -1,4 +1,13 @@
-# reddit_data_mining
+# association_rules_for_subreddits
+Done by: Kacper Trębacz, Maciej Filanowicz, Jan Gruszczyński, Mikołaj Kruś.
+
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-1.png)
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-2.png)
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-3.png)
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-4.png)
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-5.png)
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-6.png)
+![This is an image](https://raw.githubusercontent.com/FirstGalacticEmpire/association_rules_for_subreddits/main/Report/reddit_raport-7.png)
 
 
 ## Association rules
